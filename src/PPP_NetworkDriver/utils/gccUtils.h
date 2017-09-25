@@ -1,19 +1,12 @@
 /**
  *******************************************************************************
- * @file        LCP.h
- * @version     0.0.3
- * @date        2017.09.25
- * @author      M. Strosche
- * @brief       Header file of the LCP-Protocol-Stack.
+ * @file        myUtils.h
+ * @version     0.0.1
+ * @date        2017.09.21
+ * @author      Michael Strosche (TheCross)
+ * @brief       This file defines gcc specific helper-functions.
  *
- * @since       V0.0.3, 2017.09.25:
- *                      -# Added net_LCP_getState. (MS)
- *                      -# Added net_LCP_startConfigurationOfHost. (MS)
- *
- * @since       V0.0.2, 2017.09.12:
- *                      -# Modified doxygen-comments. (MS)
- *
- * @since       V0.0.1, 2017.09.11:
+ * @since       V0.0.1, 2017.09.21:
  *                      -# Initial version. (MS)
  *
  * @copyright   The MIT License (MIT)                                         @n
@@ -45,45 +38,58 @@
  *******************************************************************************
  */
 
-#ifndef _NET_LCP_H_
-#define _NET_LCP_H_
+#ifndef _GCCUTILS_H_
+#define _GCCUTILS_H_
 
-#include "..\\..\\system.h"
-#include "..\\..\\utils\\databuffer.h"
+#define GCC_VERSION     \
+        (__GNUC__ * 10000 + __GNUC_MINOR__ * 100 + __GNUC_PATCHLEVEL__)
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#ifndef min
+        /**
+         *  This Macro defines the Minimum-Function if not implemented.
+         */
+        #define min(_a_, _b_)                      \
+                ({ __typeof__ (_a_) __a__ = (_a_); \
+                   __typeof__ (_b_) __b__ = (_b_); \
+                   __a__ < __b__ ? __a__ : __b__;  \
+                })
+#endif /* max */
 
-#define NET_LCP_STATE__HOST_CONFIGURED          BV(0)
-#define NET_LCP_STATE__CLIENT_CONFIGURED        BV(1)
+#ifndef max
+        /**
+         *  This Macro defines the Maximum-Function if not implemented.
+         */
+        #define max(_a_, _b_)                      \
+                ({ __typeof__ (_a_) __a__ = (_a_); \
+                   __typeof__ (_b_) __b__ = (_b_); \
+                   __a__ > __b__ ? __a__ : __b__;  \
+                })
+#endif /* max */
 
 /**
- *  Initializes the LCP-Protocol-Stack on the Data-Link-Layer.
- *  @return     None.
- *  @pre        None.
- *  @post       This module is initialized.
+ *  This Macro will check if two variables are of the same type.
  */
-void net_LCP_init(void);
+#define __same_type(_a_, _b_)   \
+        __builtin_types_compatible_p(__typeof__(_a_), __typeof__(_b_))
 
 /**
- *  Returns the current state of the LCP-Connection.
- *  @return     Current state of the LCP-Connection.
- *  @pre        net_LCP_init has been called.
- *  @post       None.
+ *  This Macro will define the byte order.
  */
-uint8_t net_LCP_getState(void);
+#define BYTEORDER               __BYTE_ORDER__
 
 /**
- *  Starts the process of passing configurations to the host.
- *  @return     None.
- *  @pre        net_LCP_init has been called.
- *  @post       Process of passing configurations to the host has been started.
+ *  This Macro will define the value for little-enadian.
  */
-void net_LCP_startConfigurationOfHost(void);
+#define BYTEORDER_LITTLE        __ORDER_LITTLE_ENDIAN__
 
-#ifdef __cplusplus
-} // extern "C"
-#endif
+/**
+ *  This Macro will define the value for big-enadian.
+ */
+#define BYTEORDER_BIG           __ORDER_BIG_ENDIAN__
 
-#endif /* _NET_LCP_H_ */
+/**
+ *  This Macro will define the value for pdp-enadian.
+ */
+#define BYTEORDER_PDP           __ORDER_PDP_ENDIAN__
+
+#endif /* _GCCUTILS_H_ */

@@ -1,11 +1,15 @@
 /**
  *******************************************************************************
  * @file        serialConsole.h
- * @version     0.0.2
- * @date        2017.09.12
+ * @version     0.0.3
+ * @date        2017.09.25
  * @author      Michael Strosche (TheCross)
  * @brief       Header-file to handle input/output of serial data (strings,
                 etc.).
+ *
+ * @since       V0.0.3, 2017.09.25:
+ *                      -# Changed from inline to macro. (MS)
+ *                      -# No typedefs for struct and enum. (MS)
  *
  * @since       V0.0.2, 2017.09.12:
  *                      -# Modified doxygen-comments. (MS)
@@ -123,17 +127,15 @@ void serialConsole_txBytes(uint8_t *b, uint16_t length);
  *  Transmits a String (zero-terminated Character-Array).                     @n
  *  This function will block until the last character had been put into the
  *  TX-Buffer.
- *  @param      s: Pointer to a zero-terminated Character-Array to transmit.
+ *  @param      _s_: Pointer to a zero-terminated Character-Array to transmit.
  *  @return     None.
  *  @pre        The function serialConsole_init had been called.
  *  @post       The String had ben put into the TX-Buffer (hardware or
  *              software).
  *  @see        serialConsole_txBytes
  */
-static inline void serialConsole_txString(char *s)
-{
-        serialConsole_txBytes((uint8_t *)s, strlen(s));
-}
+#define serialConsole_txString(_s_)     \
+        serialConsole_txBytes((uint8_t *)_s_, strlen(_s_))
 
 /**
  *  Transmits a DataBuffer.                                                   @n
@@ -146,11 +148,10 @@ static inline void serialConsole_txString(char *s)
  *              software).
  *  @see        serialConsole_txBytes
  */
-static inline void serialConsole_txDatabuffer(databuffer_basic_t *chain)
+inline void serialConsole_txDatabuffer(struct databuffer_basic_t *chain)
 {
         while (chain != NULL) {
                 serialConsole_txBytes(chain->data, chain->length);
-
                 chain = chain->next;
         }
 }

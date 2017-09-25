@@ -1,15 +1,18 @@
 /**
  *******************************************************************************
  * @file        IPV4.h
- * @version     1.0
- * @date        2016.06.28
+ * @version     0.0.2
+ * @date        2017.09.25
  * @author      M. Strosche
  * @brief       Header file of the IPV4-Protocol-Stack.
  *              This module implements the IPV4-Protocol-Stack for the
  *              Internet-Layer of the OSI-Model.
  *
- * @since       V1.0, 2016.06.28:
- *              -# Initiale Version (MS)
+ * @since       V0.0.2, 2017.09.25:
+ *                      -# No typedefs for struct and enum. (MS)
+ *
+ * @since       V0.0.1, 2017.09.11:
+ *                      -# Initiale Version (MS)
  *
  * @copyright   The MIT License (MIT)                                         @n
  *                                                                            @n
@@ -55,10 +58,10 @@ extern "C" {
  * This enum specifies the different protocols that can be handled by the IPV4-
  * Module.
  */
-typedef enum {
+enum ipv4_protocol_e {
         IP_PROTOCOL_UDP = 0x11,
         IP_PROTOCOL_TCP = 0x06
-} ipv4_protocol_e;
+};
 
 /**
  *  Initializes the IPV4-Protocol-Stack on the Internet-Layer and the
@@ -88,7 +91,8 @@ void net_IPV4_setLocalIP(uint8_t ip[4]);
  *  @pre        net_PPP_init has been called.
  *  @post       None.
  */
-void net_IPV4_setUDPRxCallback(void (*rxCallback)(databuffer_basic_t *rxDataBuffer, ipv4_t sourceIP));
+void net_IPV4_setUDPRxCallback(void (*rxCallback)(struct databuffer_basic_t *rxDataBuffer,
+                                                  ipv4_t sourceIP));
 
 /**
  *  Sets the function that will be called when a new TCP-packet has been
@@ -99,7 +103,8 @@ void net_IPV4_setUDPRxCallback(void (*rxCallback)(databuffer_basic_t *rxDataBuff
  *  @pre        net_PPP_init has been called.
  *  @post       None.
  */
-void net_IPV4_setTCPRxCallback(void (*rxCallback)(databuffer_basic_t *rxDataBuffer, ipv4_t sourceIP));
+void net_IPV4_setTCPRxCallback(void (*rxCallback)(struct databuffer_basic_t *rxDataBuffer,
+                                                  ipv4_t sourceIP));
 
 #ifdef __cplusplus
 } // extern "C"

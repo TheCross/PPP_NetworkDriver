@@ -1,10 +1,14 @@
 /**
  *******************************************************************************
  * @file        databuffer.h
- * @version     0.0.2
- * @date        2017.09.12
+ * @version     0.0.3
+ * @date        2017.09.25
  * @author      Michael Strosche (TheCross)
  * @brief       Header-file to handle chained databuffers.
+ *
+ * @since       V0.0.3, 2017.09.25:
+ *                      -# Changed from inline to macro. (MS)
+ *                      -# No typedefs for struct and enum. (MS)
  *
  * @since       V0.0.2, 2017.09.12:
  *                      -# Modified doxygen-comments. (MS)
@@ -53,32 +57,32 @@ extern "C" {
 /**
  *  This structure defines a basic DataBuffer-Element.
  */
-typedef struct databuffer_basic_type {
+struct databuffer_basic_t {
         /**
          * Pointer to the previous segment.
          */
-        struct databuffer_basic_type *prev;
+        struct databuffer_basic_t      *prev;
         
         /**
          * Pointer to the next segment.
          */
-        struct databuffer_basic_type *next;
+        struct databuffer_basic_t      *next;
         
         /**
          * Total length of the data beginning from this segment.
          */
-        uint32_t                      tot_length;
+        uint32_t                        tot_length;
         
         /**
          * Length of the data in this segment.
          */
-        uint16_t                      length;
+        uint16_t                        length;
         
         /**
          * Pointer to the Data-Array.
          */
-        uint8_t                      *data;
-} databuffer_basic_t;
+        uint8_t                        *data;
+};
 
 /**
  *  Inserts a DataBuffer-Segment (it can also be a chain) at the end of another
@@ -91,8 +95,8 @@ typedef struct databuffer_basic_type {
  *              DataBuffer-Chain and the total length of the whole
  *              DataBuffer-Chain had been updated.
  */
-void databuffer_insertAtEnd(databuffer_basic_t* chain,
-                            databuffer_basic_t* newSegment);
+void databuffer_insertAtEnd(struct databuffer_basic_t* chain,
+                            struct databuffer_basic_t* newSegment);
 
 /**
  *  Inserts a DataBuffer-Segment (it can also be a chain) at the start of
@@ -105,8 +109,8 @@ void databuffer_insertAtEnd(databuffer_basic_t* chain,
  *              DataBuffer-Chain and the total length of the whole
  *              DataBuffer-Chain had been updated.
  */
-void databuffer_insertAtStart(databuffer_basic_t* chain,
-                              databuffer_basic_t* newSegment);
+void databuffer_insertAtStart(struct databuffer_basic_t* chain,
+                              struct databuffer_basic_t* newSegment);
 
 /**
  *  Inserts a DataBuffer-Segment (it can also be a chain) before another
@@ -121,8 +125,8 @@ void databuffer_insertAtStart(databuffer_basic_t* chain,
  *              DataBuffer-Element and the total length of the whole
  *              DataBuffer-Chain had been updated.
  */
-void databuffer_insertBefore(databuffer_basic_t* currentSegment,
-                             databuffer_basic_t* newSegment);
+void databuffer_insertBefore(struct databuffer_basic_t* currentSegment,
+                             struct databuffer_basic_t* newSegment);
 
 /**
  *  Inserts a DataBuffer-Segment (it can also be a chain) after another
@@ -137,8 +141,8 @@ void databuffer_insertBefore(databuffer_basic_t* currentSegment,
  *              DataBuffer-Element and the total length of the whole
  *              DataBuffer-Chain had been updated.
  */
-void databuffer_insertAfter(databuffer_basic_t* currentSegment,
-                            databuffer_basic_t* newSegment);
+void databuffer_insertAfter(struct databuffer_basic_t* currentSegment,
+                            struct databuffer_basic_t* newSegment);
 
 /**
  *  Creates a new single DataBuffer-Element by linking the corresponding
@@ -151,7 +155,7 @@ void databuffer_insertAfter(databuffer_basic_t* currentSegment,
  *  @pre        None.
  *  @post       The DataBuffer-Element has been created.
  */
-inline void databuffer_create(databuffer_basic_t* databuffer,
+inline void databuffer_create(struct databuffer_basic_t *databuffer,
                               uint8_t *data,
                               uint16_t length)
 {
@@ -178,31 +182,27 @@ inline void databuffer_create(databuffer_basic_t* databuffer,
  *  @pre        None.
  *  @post       The data has been copied from the source to the destination.
  */
-void databuffer_copy_partial(databuffer_basic_t* chainDest,
+void databuffer_copy_partial(struct databuffer_basic_t* chainDest,
                              uint16_t offsetDest,
-                             databuffer_basic_t* chainSrc,
+                             struct databuffer_basic_t* chainSrc,
                              uint16_t offsetSrc,
                              uint16_t length);
 
 /**
  *  Copies a specific amount of data from one DataBuffer-Chain to another
  *  beginning from the first Byte in each DataBuffer-Chain.
- *  @param      chainDest: First DataBuffer-Element of a chain that should hold
- *              the copied data.
- *  @param      chainSrc: First DataBuffer-Element of a chain that holds the
+ *  @param      _chainDest_: First DataBuffer-Element of a chain that should
+ *              hold the copied data.
+ *  @param      _chainSrc_: First DataBuffer-Element of a chain that holds the
  *              data that has to be copied.
- *  @param      length: Number of Bytes to copy.
+ *  @param      _length_: Number of Bytes to copy.
  *  @return     None.
  *  @pre        None.
  *  @post       The data has been copied from the source to the destination.
  *  @see        databuffer_copy_partial
  */
-inline void databuffer_copy(databuffer_basic_t* chainDest,
-                            databuffer_basic_t* chainSrc,
-                            uint16_t length)
-{
-        databuffer_copy_partial(chainDest, 0, chainSrc, 0, length);
-}
+#define databuffer_copy(_chainDest_, _chainSrc_, _length_)      \
+        databuffer_copy_partial(_chainDest_, 0, _chainSrc_, 0, _length_)
 
 #ifdef __cplusplus
 } // extern "C"

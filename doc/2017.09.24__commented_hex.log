@@ -1,0 +1,224 @@
+PPPState_Establish
+
+LCP_ConfigureRequest:
+0206 -> ACCM
+  00000000
+0506 -> MagicNumber
+  313F9BB2
+0702 -> ProtocolCompression
+0802 -> AddressAndControlCompression
+
+LCP_ConfigureRequest:
+0206 -> ACCM
+  00000000
+0506 -> MagicNumber
+  313F9BB2
+0702 -> ProtocolCompression
+0802 -> AddressAndControlCompression
+
+LCP_ConfigureRequest:
+0206
+  00000000
+0506 -> MagicNumber
+  313F9BB2
+
+LCP_ConfigureAck:
+0506 -> MagicNumber
+  CEC0644D
+0206 -> ACCM
+  00000000
+0104 -> MRU
+  0240 -> 576
+
+LCP_EchoRequest: => (1) SHOULD BE REPLYED WITH EchoReply when LCP-State == Opened
+313F9BB2 -> from Host with it's magic-number: 313F9BB2
+
+recv_? (80FD -> CCP): => (3) SHOULD BE REPLYED WITH ProtocolReject, BECAUSE WE WILL NOT SUPPORT THIS!
+0101000F -> Configure Request
+  1A04 -> Deflate (PPP Deflate Protocol)
+    7800
+  1804 -> MVRCA (PPP Magnalink Variable Resource Compression Algorithm)
+    7800
+  1503 -> BSD (PPP BSD Compression Protocol.)
+    2F
+
+recv_? (8021 -> IPCP):
+01010010 -> Configure Request
+  0206 -> Compression => (4) SHOULD BE REPLYED WITH ConfigureReject, BECAUSE WE WILL NOT SUPPORT THIS!
+    002D -> Van Jacobson Compressed TCP/IP headers
+    0F -> Max-Slot-Id
+    01 -> Comp-Slot-Id
+  0306 -> IP-Address => (5) SHOULD BE REPLYED WITH ConfigureAck!
+    C0A80101 -> 192.168.1.1
+
+recv_? (80FD -> CCP): => (3) SHOULD BE REPLYED WITH ProtocolReject, BECAUSE WE WILL NOT SUPPORT THIS!
+0101000F -> Configure Request
+  1A04 -> Deflate (PPP Deflate Protocol)
+    7800
+  1804 -> MVRCA (PPP Magnalink Variable Resource Compression Algorithm)
+    7800
+  1503 -> BSD (PPP BSD Compression Protocol.)
+    2F
+
+recv_? (8021 -> IPCP):
+01010010 -> Configure Request
+  0206 -> Compression => (4) SHOULD BE REPLYED WITH ConfigureReject, BECAUSE WE WILL NOT SUPPORT THIS!
+    002D -> Van Jacobson Compressed TCP/IP headers
+    0F -> Max-Slot-Id
+    01 -> Comp-Slot-Id
+  0306 -> IP-Address => (5) SHOULD BE REPLYED WITH ConfigureAck!
+    C0A80101 -> 192.168.1.1
+
+recv_? (80FD -> CCP): => (3) SHOULD BE REPLYED WITH ProtocolReject, BECAUSE WE WILL NOT SUPPORT THIS!
+0101000F -> Configure Request
+  1A04 -> Deflate (PPP Deflate Protocol)
+    7800
+  1804 -> MVRCA (PPP Magnalink Variable Resource Compression Algorithm)
+    7800
+  1503 -> BSD (PPP BSD Compression Protocol.)
+    2F
+
+recv_? (8021 -> IPCP):
+01010010 -> Configure Request
+  0206 -> Compression => (4) SHOULD BE REPLYED WITH ConfigureReject, BECAUSE WE WILL NOT SUPPORT THIS!
+    002D -> Van Jacobson Compressed TCP/IP headers
+    0F -> Max-Slot-Id
+    01 -> Comp-Slot-Id
+  0306 -> IP-Address => (5) SHOULD BE REPLYED WITH ConfigureAck!
+    C0A80101 -> 192.168.1.1
+
+recv_? (80FD -> CCP): => (3) SHOULD BE REPLYED WITH ProtocolReject, BECAUSE WE WILL NOT SUPPORT THIS!
+0101000F -> Configure Request
+  1A04 -> Deflate (PPP Deflate Protocol)
+    7800
+  1804 -> MVRCA (PPP Magnalink Variable Resource Compression Algorithm)
+    7800
+  1503 -> BSD (PPP BSD Compression Protocol.)
+    2F
+
+recv_? (8021 -> IPCP):
+01010010 -> Configure Request
+  0206 -> Compression => (4) SHOULD BE REPLYED WITH ConfigureReject, BECAUSE WE WILL NOT SUPPORT THIS!
+    002D -> Van Jacobson Compressed TCP/IP headers
+    0F -> Max-Slot-Id
+    01 -> Comp-Slot-Id
+  0306 -> IP-Address => (5) SHOULD BE REPLYED WITH ConfigureAck!
+    C0A80101 -> 192.168.1.1
+
+recv_? (80FD -> CCP): => (3) SHOULD BE REPLYED WITH ProtocolReject, BECAUSE WE WILL NOT SUPPORT THIS!
+0101000F -> Configure Request
+  1A04 -> Deflate (PPP Deflate Protocol)
+    7800
+  1804 -> MVRCA (PPP Magnalink Variable Resource Compression Algorithm)
+    7800
+  1503 -> BSD (PPP BSD Compression Protocol.)
+    2F
+
+recv_? (8021 -> IPCP):
+01010010 -> Configure Request
+  0206 -> Compression => (4) SHOULD BE REPLYED WITH ConfigureReject, BECAUSE WE WILL NOT SUPPORT THIS!
+    002D -> Van Jacobson Compressed TCP/IP headers
+    0F -> Max-Slot-Id
+    01 -> Comp-Slot-Id
+  0306 -> IP-Address => (5) SHOULD BE REPLYED WITH ConfigureAck!
+    C0A80101 -> 192.168.1.1
+
+recv_? (80FD -> CCP): => (3) SHOULD BE REPLYED WITH ProtocolReject, BECAUSE WE WILL NOT SUPPORT THIS!
+0101000F -> Configure Request
+  1A04 -> Deflate (PPP Deflate Protocol)
+    7800
+  1804 -> MVRCA (PPP Magnalink Variable Resource Compression Algorithm)
+    7800
+  1503 -> BSD (PPP BSD Compression Protocol.)
+    2F
+
+recv_? (8021 -> IPCP):
+01010010 -> Configure Request
+  0206 -> Compression => (4) SHOULD BE REPLYED WITH ConfigureReject, BECAUSE WE WILL NOT SUPPORT THIS!
+    002D -> Van Jacobson Compressed TCP/IP headers
+    0F -> Max-Slot-Id
+    01 -> Comp-Slot-Id
+  0306 -> IP-Address => (5) SHOULD BE REPLYED WITH ConfigureAck!
+    C0A80101 -> 192.168.1.1
+
+recv_? (80FD -> CCP): => (3) SHOULD BE REPLYED WITH ProtocolReject, BECAUSE WE WILL NOT SUPPORT THIS!
+0101000F -> Configure Request
+  1A04 -> Deflate (PPP Deflate Protocol)
+    7800
+  1804 -> MVRCA (PPP Magnalink Variable Resource Compression Algorithm)
+    7800
+  1503 -> BSD (PPP BSD Compression Protocol.)
+    2F
+
+recv_? (8021 -> IPCP):
+01010010 -> Configure Request
+  0206 -> Compression => (4) SHOULD BE REPLYED WITH ConfigureReject, BECAUSE WE WILL NOT SUPPORT THIS!
+    002D -> Van Jacobson Compressed TCP/IP headers
+    0F -> Max-Slot-Id
+    01 -> Comp-Slot-Id
+  0306 -> IP-Address => (5) SHOULD BE REPLYED WITH ConfigureAck!
+    C0A80101 -> 192.168.1.1
+
+recv_? (80FD -> CCP): => (3) SHOULD BE REPLYED WITH ProtocolReject, BECAUSE WE WILL NOT SUPPORT THIS!
+0101000F -> Configure Request
+  1A04 -> Deflate (PPP Deflate Protocol)
+    7800
+  1804 -> MVRCA (PPP Magnalink Variable Resource Compression Algorithm)
+    7800
+  1503 -> BSD (PPP BSD Compression Protocol.)
+    2F
+
+recv_? (8021 -> IPCP):
+01010010 -> Configure Request
+  0206 -> Compression => (4) SHOULD BE REPLYED WITH ConfigureReject, BECAUSE WE WILL NOT SUPPORT THIS!
+    002D -> Van Jacobson Compressed TCP/IP headers
+    0F -> Max-Slot-Id
+    01 -> Comp-Slot-Id
+  0306 -> IP-Address => (5) SHOULD BE REPLYED WITH ConfigureAck!
+    C0A80101 -> 192.168.1.1
+
+recv_? (80FD -> CCP): => (3) SHOULD BE REPLYED WITH ProtocolReject, BECAUSE WE WILL NOT SUPPORT THIS!
+0101000F -> Configure Request
+  1A04 -> Deflate (PPP Deflate Protocol)
+    7800
+  1804 -> MVRCA (PPP Magnalink Variable Resource Compression Algorithm)
+    7800
+  1503 -> BSD (PPP BSD Compression Protocol.)
+    2F
+
+recv_? (8021 -> IPCP):
+01010010 -> Configure Request
+  0206 -> Compression => (4) SHOULD BE REPLYED WITH ConfigureReject, BECAUSE WE WILL NOT SUPPORT THIS!
+    002D -> Van Jacobson Compressed TCP/IP headers
+    0F -> Max-Slot-Id
+    01 -> Comp-Slot-Id
+  0306 -> IP-Address => (5) SHOULD BE REPLYED WITH ConfigureAck!
+    C0A80101 -> 192.168.1.1
+
+recv_? (80FD -> CCP): => (3) SHOULD BE REPLYED WITH ProtocolReject, BECAUSE WE WILL NOT SUPPORT THIS!
+0101000F -> Configure Request
+  1A04 -> Deflate (PPP Deflate Protocol)
+    7800
+  1804 -> MVRCA (PPP Magnalink Variable Resource Compression Algorithm)
+    7800
+  1503 -> BSD (PPP BSD Compression Protocol.)
+    2F
+
+recv_? (8021 -> IPCP):
+01010010 -> Configure Request
+  0206 -> Compression => (4) SHOULD BE REPLYED WITH ConfigureReject, BECAUSE WE WILL NOT SUPPORT THIS!
+    002D -> Van Jacobson Compressed TCP/IP headers
+    0F -> Max-Slot-Id
+    01 -> Comp-Slot-Id
+  0306 -> IP-Address => (5) SHOULD BE REPLYED WITH ConfigureAck!
+    C0A80101 -> 192.168.1.1
+
+LCP_EchoRequest: => (1) SHOULD BE REPLYED WITH EchoReply when LCP-State == Opened
+313F9BB2 -> from Host with it's magic-number: 313F9BB2
+
+TerminateRequest: => (2) SHOULD BE REPLYED WITH TerminateAck
+4E6F206E644D02060000000001040240000000000000000000000000
+
+TerminateRequest: => (2) SHOULD BE REPLYED WITH TerminateAck
+4E6F206E6574776F726B2070726F746F636F6C732072756E6E696E67
+-> "No network protocols running"

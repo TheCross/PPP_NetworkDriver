@@ -1,12 +1,16 @@
 /**
  *******************************************************************************
  * @file        UDP.c
- * @version     0.0.2
- * @date        2017.09.12
+ * @version     0.0.3
+ * @date        2017.09.25
  * @author      M. Strosche
  * @brief       Source file of the UDP-Protocol-Stack.
  *              This module implements the UDP-Protocol-Stack for the
  *              Transport-Layer of the OSI-Model.
+ *
+ * @since       V0.0.3, 2017.09.25:
+ *                      -# Changed from inline to macro. (MS)
+ *                      -# No typedefs for struct and enum. (MS)
  *
  * @since       V0.0.2, 2017.09.12:
  *                      -# Modified doxygen-comments. (MS)
@@ -70,37 +74,27 @@
         CONCAT2(NET_UDP_INTERNET_FUNPREFIX, _setUDPRxCallback)
 
 // type-definitions
-typedef struct {
+struct udp_header_t {
         uint32_t raw[2];
-} udp_header_t;
+};
 
 
 // private function prototypes
-static void rxCallback(databuffer_basic_t *rxDataBuffer, ipv4_t sourceIP);
-inline uint16_t udp_getSourcePort(udp_header_t *udp_header)
-{
-        return (uint16_t)((udp_header->raw[0] >> 0) & 0x0000FFFF);
-}
+static void rxCallback(struct databuffer_basic_t *rxDataBuffer, ipv4_t sourceIP);
+#define udp_getSourcePort(_udp_header_) \
+        ((uint16_t)((_udp_header_->raw[0] >> 0) & 0x0000FFFF))
 
-inline uint16_t udp_getDestinationPort(udp_header_t *udp_header)
-{
-        return (uint16_t)((udp_header->raw[0] >> 16) & 0x0000FFFF);
-}
+#define udp_getDestinationPort(_udp_header_)    \
+        ((uint16_t)((_udp_header_->raw[0] >> 16) & 0x0000FFFF))
 
-inline uint16_t udp_getLength(udp_header_t *udp_header)
-{
-        return (uint16_t)((udp_header->raw[1] >> 0) & 0x0000FFFF);
-}
+#define udp_getLength(_udp_header_)     \
+        ((uint16_t)((_udp_header_->raw[1] >> 0) & 0x0000FFFF))
 
-inline uint16_t udp_getPayloadLength(udp_header_t *udp_header)
-{
-        return udp_getLength(udp_header) - sizeof(udp_header_t);
-}
+#define udp_getPayloadLength(_udp_header_)       \
+        (udp_getLength(_udp_header_) - sizeof(struct udp_header_t))
 
-inline uint16_t udp_getCRC(udp_header_t *udp_header)
-{
-        return (uint16_t)((udp_header->raw[1] >> 16) & 0x0000FFFF);
-}
+#define udp_getCRC(_udp_header_)        \
+        ((uint16_t)((_udp_header_->raw[1] >> 16) & 0x0000FFFF))
 
 // private data
 
@@ -113,14 +107,14 @@ void net_UDP_init(void)
 
 
 // private functions
-static void rxCallback(databuffer_basic_t *rxDataBuffer, ipv4_t sourceIP)
+static void rxCallback(struct databuffer_basic_t *rxDataBuffer, ipv4_t sourceIP)
 {
-        static databuffer_basic_t rxDataBufferPayload;
+        static struct databuffer_basic_t rxDataBufferPayload;
         
-        udp_header_t *udpHeader = (udp_header_t *)&rxDataBuffer->data[0];
+        struct udp_header_t *udpHeader = (struct udp_header_t *)&rxDataBuffer->data[0];
         
         databuffer_create(&rxDataBufferPayload,
-                          &rxDataBuffer->data[sizeof(udp_header_t)],
+                          &rxDataBuffer->data[sizeof(struct udp_header_t)],
                           udp_getPayloadLength(udpHeader));
         
         char singleNumber[8];

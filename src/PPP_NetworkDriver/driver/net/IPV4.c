@@ -1,15 +1,19 @@
 /**
  *******************************************************************************
  * @file        IPV4.c
- * @version     1.0
- * @date        2016.06.28
+ * @version     0.0.2
+ * @date        2017.09.25
  * @author      M. Strosche
  * @brief       Source file of the IPV4-Protocol-Stack.
  *              This module implements the IPV4-Protocol-Stack for the
  *              Internet-Layer of the OSI-Model.
  *
- * @since       V1.0, 2016.06.28:
- *              -# Initiale Version (MS)
+ * @since       V0.0.2, 2017.09.25:
+ *                      -# Corrected Indentiation (MS)
+ *                      -# No typedefs for struct and enum. (MS)
+ *
+ * @since       V0.0.1, 2017.09.11:
+ *                      -# Initiale Version (MS)
  *
  * @copyright   The MIT License (MIT)                                         @n
  *                                                                            @n
@@ -65,14 +69,14 @@
 
 
 // private function prototypes
-static void rxCallback(databuffer_basic_t *rxDataBuffer);
-static void rxCallback_DUMMY(databuffer_basic_t *rxDataBuffer, ipv4_t sourceIP);
+static void rxCallback(struct databuffer_basic_t *rxDataBuffer);
+static void rxCallback_DUMMY(struct databuffer_basic_t *rxDataBuffer, ipv4_t sourceIP);
 
 // private data
 // RX-Callback-Functions
-static void (*rxCallback_UDP)(databuffer_basic_t *rxDataBuffer, ipv4_t sourceIP) =
+static void (*rxCallback_UDP)(struct databuffer_basic_t *rxDataBuffer, ipv4_t sourceIP) =
         rxCallback_DUMMY;
-static void (*rxCallback_TCP)(databuffer_basic_t *rxDataBuffer, ipv4_t sourceIP) =
+static void (*rxCallback_TCP)(struct databuffer_basic_t *rxDataBuffer, ipv4_t sourceIP) =
         rxCallback_DUMMY;
 static ipv4_t localIP;
 
@@ -90,13 +94,15 @@ void net_IPV4_setLocalIP(uint8_t ip[4])
         localIP = IPV4_create(ip);
 }
 
-void net_IPV4_setUDPRxCallback(void (*rxCallback)(databuffer_basic_t *rxDataBuffer, ipv4_t sourceIP))
+void net_IPV4_setUDPRxCallback(void (*rxCallback)(struct databuffer_basic_t *rxDataBuffer,
+                                                  ipv4_t sourceIP))
 {
         if (rxCallback != NULL)
                 rxCallback_UDP = rxCallback;
 }
 
-void net_IPV4_setTCPRxCallback(void (*rxCallback)(databuffer_basic_t *rxDataBuffer, ipv4_t sourceIP))
+void net_IPV4_setTCPRxCallback(void (*rxCallback)(struct databuffer_basic_t *rxDataBuffer,
+                                                  ipv4_t sourceIP))
 {
         if (rxCallback != NULL)
                 rxCallback_TCP = rxCallback;
@@ -104,9 +110,9 @@ void net_IPV4_setTCPRxCallback(void (*rxCallback)(databuffer_basic_t *rxDataBuff
 
 
 // private functions
-static void rxCallback(databuffer_basic_t *rxDataBuffer)
+static void rxCallback(struct databuffer_basic_t *rxDataBuffer)
 {
-        static databuffer_basic_t rxDataBufferPayload;
+        static struct databuffer_basic_t rxDataBufferPayload;
         
         ipv4_t sourceIP;
         ipv4_header_t *ipHeader = (ipv4_header_t *)&rxDataBuffer->data[0];
@@ -126,20 +132,20 @@ static void rxCallback(databuffer_basic_t *rxDataBuffer)
                                           payloadLength);
 
                         switch (IPV4_header_getProtocol(ipHeader)) {
-                                case IP_PROTOCOL_UDP:
-                                        rxCallback_UDP(&rxDataBufferPayload,
-                                                       sourceIP);
-                                        break;
-                                        
-                                case IP_PROTOCOL_TCP:
-                                        rxCallback_TCP(&rxDataBufferPayload,
-                                                       sourceIP);
-                                        break;
-                                        
-                                default:
-                                        rxCallback_DUMMY(&rxDataBufferPayload,
-                                                         sourceIP);
-                                        break;
+                        case IP_PROTOCOL_UDP:
+                                rxCallback_UDP(&rxDataBufferPayload,
+                                               sourceIP);
+                                break;
+                                
+                        case IP_PROTOCOL_TCP:
+                                rxCallback_TCP(&rxDataBufferPayload,
+                                               sourceIP);
+                                break;
+                                
+                        default:
+                                rxCallback_DUMMY(&rxDataBufferPayload,
+                                                 sourceIP);
+                                break;
                         }
                 } else {
                         serialConsole_txString("not my IP\n");
@@ -149,7 +155,8 @@ static void rxCallback(databuffer_basic_t *rxDataBuffer)
         }
 }
 
-static void rxCallback_DUMMY(databuffer_basic_t *rxDataBuffer, ipv4_t sourceIP)
+static void rxCallback_DUMMY(struct databuffer_basic_t *rxDataBuffer,
+                             ipv4_t sourceIP)
 {
         char singleNumber[4];
         serialConsole_txString("\n\nrecv_IP_?[");

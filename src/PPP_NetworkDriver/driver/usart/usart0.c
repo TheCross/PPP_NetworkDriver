@@ -1,10 +1,15 @@
 /**
  *******************************************************************************
  * @file        usart0.c
- * @version     0.0.2
- * @date        2017.09.12
+ * @version     0.0.3
+ * @date        2017.09.25
  * @author      Michael Strosche (TheCross)
  * @brief       Source-file for the internal USART0-periphery.
+ *
+ * @since       V0.0.3, 2017.09.25:
+ *                      -# Tabs to spaces. (MS)
+ *                      -# Use of UNUSED_ARG in dummyTxCallback. (MS)
+ *                      -# Modification of databit-calculation. (MS)
  *
  * @since       V0.0.2, 2017.09.12:
  *                      -# Modified doxygen-comments. (MS)
@@ -68,6 +73,13 @@
         #error "9th databit currently not supported"
 #endif
 
+#if (USART0_DATABITS < 5) || (USART0_DATABITS > 9)
+        #error "Illegal setting of USART0_DATABITS! Sould be [5, 9]."
+#endif
+
+#define USART0_DATABITS_REGVAL  \
+        (USART0_DATABITS - 5 + ((USART0_DATABITS / 9) * 3))
+
 // private function prototypes
 static void dummyRxCallback(uint8_t b);
 static void dummyTxCallback(void);
@@ -90,8 +102,8 @@ void usart0_init(uint32_t baudrate)
         
         UCSR0C |= (USART0_PARITY << UPM00);
         UCSR0C |= (USART0_STOPBITS << USBS0);
-        UCSR0C |= ((USART0_DATABITS & 0x03) << UCSZ00);
-        UCSR0B |= (((USART0_DATABITS & 0x04) >> 2) << UCSZ02);
+        UCSR0C |= ((USART0_DATABITS_REGVAL & 0x03) << UCSZ00);
+        UCSR0B |= (((USART0_DATABITS_REGVAL & 0x04) >> 2) << UCSZ02);
   
 #ifdef USART0_USE2X
         UCSR0A |= (1 << U2X0);
@@ -103,7 +115,7 @@ void usart0_init(uint32_t baudrate)
         // Enable RX and TX
         UCSR0B |=  (1 << RXEN0) | (1 << TXEN0);
         // Enable RX and TX interrupts
-    UCSR0B |=  (1 << RXCIE0) | (1 << TXCIE0);
+        UCSR0B |=  (1 << RXCIE0) | (1 << TXCIE0);
 }
 
 void usart0_setRxFinishedCallback(void (*callback)(uint8_t b))
@@ -121,8 +133,7 @@ void usart0_setTxFinishedCallback(void (*callback)(void))
 // private functions
 static void dummyRxCallback(uint8_t b)
 {
-  // This line is to remove the warning about an unused parameter 'b'
-  b = b;
+        UNUSED_ARG(b);
 }
 
 static void dummyTxCallback(void) {}

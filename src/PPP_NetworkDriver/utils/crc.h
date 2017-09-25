@@ -1,10 +1,13 @@
 /**
  *******************************************************************************
  * @file        crc.h
- * @version     0.0.2
- * @date        2017.09.12
+ * @version     0.0.3
+ * @date        2017.09.25
  * @author      Michael Strosche (TheCross)
  * @brief       This file defines helper-functions to calculate a CRC-value.
+ *
+ * @since       V0.0.3, 2017.09.25:
+ *                      -# Changed from inline to macro. (MS)
  *
  * @since       V0.0.2, 2017.09.12:
  *                      -# Modified doxygen-comments. (MS)
@@ -114,29 +117,25 @@ static uint16_t crc16_fcs_tab[256] = {
 
 /**
  *  Initializes the CRC-Buffer with the Seed-Value.
- *  @param      crc: Pointer to the CRC-Buffer.
+ *  @param      _crc_: Pointer to the CRC-Buffer.
  *  @return     None.
  *  @pre        None.
  *  @post       None.
  */
-static inline void crc16_fcs_setSeed(crc16_t *crc)
-{
-        *crc = (crc16_t)0xFFFF;
-}
+#define crc16_fcs_setSeed(_crc_)        \
+        *(_crc_) = (crc16_t)0xFFFF
 
 /**
  *  Calculates the CRC-Value according to the Data-Byte and the current
  *  CRC-Value.
- *  @param      crc: Pointer to the CRC-Buffer.
- *  @param      b: Data-Byte.
+ *  @param      _crc_: Pointer to the CRC-Buffer.
+ *  @param      _b_: Data-Byte.
  *  @return     None.
  *  @pre        None.
  *  @post       The CRC-Buffer holds the new CRC-Value.
  */
-static inline void crc16_fcs_byte(crc16_t *crc, uint8_t b)
-{
-        *crc = (*crc >> 8) ^ crc16_fcs_tab[(*crc ^ b) & 0xFF];
-}
+#define crc16_fcs_byte(_crc_, _b_)      \
+        *(_crc_) = (*(_crc_) >> 8) ^ crc16_fcs_tab[(*(_crc_) ^ (_b_)) & 0xFF]
 
 /**
  *  Calculates the CRC-Value according to the Data-Array and the current
@@ -148,7 +147,7 @@ static inline void crc16_fcs_byte(crc16_t *crc, uint8_t b)
  *  @pre        None.
  *  @post       The CRC-Buffer holds the new CRC-Value.
  */
-static inline void crc16_fcs_data(crc16_t *crc, uint8_t *data, uint8_t length)
+static inline void crc16_fcs_data(crc16_t *crc, uint8_t *data, uint16_t length)
 {
         while (length--) {
                 crc16_fcs_byte(crc, *data);

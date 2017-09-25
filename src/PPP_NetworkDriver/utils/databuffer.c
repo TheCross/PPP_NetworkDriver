@@ -1,10 +1,13 @@
 /**
  *******************************************************************************
  * @file        databuffer.c
- * @version     0.0.2
- * @date        2017.09.12
+ * @version     0.0.3
+ * @date        2017.09.25
  * @author      Michael Strosche (TheCross)
  * @brief       Sorce-file to handle chained databuffers.
+ *
+ * @since       V0.0.3, 2017.09.25:
+ *                      -# No typedefs for struct and enum. (MS)
  *
  * @since       V0.0.2, 2017.09.12:
  *                      -# Modified doxygen-comments. (MS)
@@ -45,12 +48,12 @@
 
 #include "..\\system.h"
 
-void databuffer_adjustLength(databuffer_basic_t* chain);
+void databuffer_adjustLength(struct databuffer_basic_t* chain);
 
-void databuffer_insertAtEnd(databuffer_basic_t* chain,
-                            databuffer_basic_t* newSegment)
+void databuffer_insertAtEnd(struct databuffer_basic_t* chain,
+                            struct databuffer_basic_t* newSegment)
 {
-        databuffer_basic_t *chainEnd = chain;
+        struct databuffer_basic_t *chainEnd = chain;
         
         while (chainEnd->next != NULL)
                 chainEnd = chainEnd->next;
@@ -61,11 +64,11 @@ void databuffer_insertAtEnd(databuffer_basic_t* chain,
         databuffer_adjustLength(chain);
 }
 
-void databuffer_insertAtStart(databuffer_basic_t* chain,
-                              databuffer_basic_t* newSegment)
+void databuffer_insertAtStart(struct databuffer_basic_t* chain,
+                              struct databuffer_basic_t* newSegment)
 {
-        databuffer_basic_t *chainHead = chain;
-        databuffer_basic_t *newSegmentEnd = newSegment;
+        struct databuffer_basic_t *chainHead = chain;
+        struct databuffer_basic_t *newSegmentEnd = newSegment;
         
         while (chainHead->prev != NULL)
                 chainHead = chainHead->prev;
@@ -78,8 +81,8 @@ void databuffer_insertAtStart(databuffer_basic_t* chain,
         databuffer_adjustLength(chain);
 }
 
-void databuffer_insertBefore(databuffer_basic_t* currentSegment,
-                             databuffer_basic_t* newSegment)
+void databuffer_insertBefore(struct databuffer_basic_t* currentSegment,
+                             struct databuffer_basic_t* newSegment)
 {
         if (currentSegment->prev == NULL) {
                 databuffer_insertAtStart(currentSegment, newSegment);
@@ -88,13 +91,13 @@ void databuffer_insertBefore(databuffer_basic_t* currentSegment,
         }
 }
 
-void databuffer_insertAfter(databuffer_basic_t* currentSegment,
-                            databuffer_basic_t* newSegment)
+void databuffer_insertAfter(struct databuffer_basic_t* currentSegment,
+                            struct databuffer_basic_t* newSegment)
 {
         if (currentSegment->next == NULL) {
                 databuffer_insertAtEnd(currentSegment, newSegment);
         } else {
-                databuffer_basic_t *newSegmentEnd = newSegment;
+                struct databuffer_basic_t *newSegmentEnd = newSegment;
                 
                 while (newSegmentEnd->next != NULL)
                         newSegmentEnd = newSegmentEnd->next;
@@ -108,15 +111,15 @@ void databuffer_insertAfter(databuffer_basic_t* currentSegment,
         }
 }
 
-void databuffer_adjustLength(databuffer_basic_t* chain)
+void databuffer_adjustLength(struct databuffer_basic_t* chain)
 {
         // go to end of the list
-        databuffer_basic_t *chainEnd = chain;
+        struct databuffer_basic_t *chainEnd = chain;
         while (chainEnd->next != NULL)
                 chainEnd = chainEnd->next;
         
         // move to beginning of the list and accumulate the length
-        databuffer_basic_t *chainPosition = chainEnd;
+        struct databuffer_basic_t *chainPosition = chainEnd;
         while (chainPosition != NULL) {
                 if (chainPosition->next != NULL)
                         chainPosition->tot_length =
@@ -129,9 +132,9 @@ void databuffer_adjustLength(databuffer_basic_t* chain)
         }
 }
 
-void databuffer_copy_partial(databuffer_basic_t* chainDest,
+void databuffer_copy_partial(struct databuffer_basic_t* chainDest,
                              uint16_t offsetDest,
-                             databuffer_basic_t* chainSrc,
+                             struct databuffer_basic_t* chainSrc,
                              uint16_t offsetSrc,
                              uint16_t length)
 {

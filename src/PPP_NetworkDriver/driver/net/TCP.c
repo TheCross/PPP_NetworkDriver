@@ -1,12 +1,16 @@
 /**
  *******************************************************************************
  * @file        TCP.c
- * @version     0.0.2
- * @date        2017.09.12
+ * @version     0.0.3
+ * @date        2017.09.25
  * @author      M. Strosche
  * @brief       Source file of the TCP-Protocol-Stack.
  *              This module implements the TCP-Protocol-Stack for the
  *              Transport-Layer of the OSI-Model.
+ *
+ * @since       V0.0.3, 2017.09.25:
+ *                      -# Changed from inline to macro. (MS)
+ *                      -# No typedefs for struct and enum. (MS)
  *
  * @since       V0.0.2, 2017.09.12:
  *                      -# Modified doxygen-comments. (MS)
@@ -70,58 +74,40 @@
         CONCAT2(NET_TCP_INTERNET_FUNPREFIX, _setTCPRxCallback)
 
 // type-definitions
-typedef struct {
+struct tcp_header_t {
         uint32_t raw[5];
-} tcp_header_t;
+};
 
 
 // private function prototypes
-static void rxCallback(databuffer_basic_t *rxDataBuffer, ipv4_t sourceIP);
+static void rxCallback(struct databuffer_basic_t *rxDataBuffer, ipv4_t sourceIP);
 
-inline uint16_t tcp_getSourcePort(tcp_header_t *tcp_header)
-{
-        return (uint16_t)((tcp_header->raw[0] >> 0) & 0x0000FFFF);
-}
+#define tcp_getSourcePort(_tcp_header_) \
+        ((uint16_t)((_tcp_header_->raw[0] >> 0) & 0x0000FFFF))
 
-inline uint16_t tcp_getDestinationPort(tcp_header_t *tcp_header)
-{
-        return (uint16_t)((tcp_header->raw[0] >> 16) & 0x0000FFFF);
-}
+#define tcp_getDestinationPort(_tcp_header_)    \
+        ((uint16_t)((_tcp_header_->raw[0] >> 16) & 0x0000FFFF))
 
-inline uint32_t tcp_getSequenceNumber(tcp_header_t *tcp_header)
-{
-        return tcp_header->raw[1];
-}
+#define tcp_getSequenceNumber(_tcp_header_)     \
+        (_tcp_header_->raw[1])
 
-inline uint32_t tcp_getAcknowledgeNumber(tcp_header_t *tcp_header)
-{
-        return tcp_header->raw[2];
-}
+#define tcp_getAcknowledgeNumber(_tcp_header_)  \
+        (_tcp_header_->raw[2])
 
-inline uint8_t tcp_getDataOffset(tcp_header_t *tcp_header)
-{
-        return (uint8_t)((tcp_header->raw[3] >> 0) & 0x0000000F);
-}
+#define tcp_getDataOffset(_tcp_header_) \
+        ((uint8_t)((_tcp_header_->raw[3] >> 0) & 0x0000000F))
 
-inline uint8_t tcp_getControlFlags(tcp_header_t *tcp_header)
-{
-        return (uint8_t)((tcp_header->raw[3] >> 8) & 0x000000FF);
-}
+#define tcp_getControlFlags(_tcp_header_)       \
+        ((uint8_t)((_tcp_header_->raw[3] >> 8) & 0x000000FF))
 
-inline uint16_t tcp_getWindow(tcp_header_t *tcp_header)
-{
-        return (uint16_t)((tcp_header->raw[3] >> 16) & 0x0000FFFF);
-}
+#define tcp_getWindow(_tcp_header_)     \
+        ((uint16_t)((_tcp_header_->raw[3] >> 16) & 0x0000FFFF))
 
-inline uint16_t tcp_getChecksum(tcp_header_t *tcp_header)
-{
-        return (uint16_t)((tcp_header->raw[4] >> 0) & 0x0000FFFF);
-}
+#define tcp_getChecksum(_tcp_header_)   \
+        ((uint16_t)((_tcp_header_->raw[4] >> 0) & 0x0000FFFF))
 
-inline uint16_t tcp_getUrgentPointer(tcp_header_t *tcp_header)
-{
-        return (uint16_t)((tcp_header->raw[4] >> 16) & 0x0000FFFF);
-}
+#define tcp_getUrgentPointer(_tcp_header_)      \
+        ((uint16_t)((_tcp_header_->raw[4] >> 16) & 0x0000FFFF))
 
 // private data
 
@@ -133,11 +119,11 @@ void net_TCP_init(void)
 
 
 // private functions
-static void rxCallback(databuffer_basic_t *rxDataBuffer, ipv4_t sourceIP)
+static void rxCallback(struct databuffer_basic_t *rxDataBuffer, ipv4_t sourceIP)
 {
-        static databuffer_basic_t rxDataBufferPayload;
+        static struct databuffer_basic_t rxDataBufferPayload;
         
-        tcp_header_t *tcpHeader = (tcp_header_t *)&rxDataBuffer->data[0];
+        struct tcp_header_t *tcpHeader = (struct tcp_header_t *)&rxDataBuffer->data[0];
         
         uint16_t tcpPayloadOffset = tcp_getDataOffset(tcpHeader)
                                     * sizeof(uint32_t);

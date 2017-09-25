@@ -1,10 +1,13 @@
 /**
  *******************************************************************************
  * @file        usart1_cfg.h
- * @version     0.0.2
- * @date        2017.09.12
+ * @version     0.0.3
+ * @date        2017.09.25
  * @author      Michael Strosche (TheCross)
  * @brief       Config-file for the internal USART1-periphery.
+ *
+ * @since       V0.0.3, 2017.09.25:
+ *                      -# Modification of databit-calculation. (MS)
  *
  * @since       V0.0.2, 2017.09.12:
  *                      -# Modified doxygen-comments. (MS)
@@ -47,11 +50,11 @@
 /**
  *  This Define will specify the width of the data in Bits.                   @n
  *  Possible values are:                                                      @n
- *  0 -> 5 Databits                                                           @n
- *  1 -> 6 Databits                                                           @n
- *  2 -> 7 Databits                                                           @n
- *  3 -> 8 Databits                                                           @n
- *  7 -> 9 Databits
+ *  5 -> 5 Databits                                                           @n
+ *  6 -> 6 Databits                                                           @n
+ *  7 -> 7 Databits                                                           @n
+ *  8 -> 8 Databits                                                           @n
+ *  9 -> 9 Databits
  */
 #define USART1_DATABITS (8)
 
